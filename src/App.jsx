@@ -24,6 +24,19 @@ export default function App() {
 */
 
   const [filesToUpload, setFilesToUpload] = useState([])
+  function handleFileChange (event){
+    const selectedFiles=Array.from(event.target.files)
+    const allowedTypes=["application/pdf", "image/jpeg", "image/jpg", "image/png"]
+    const validFiles = selectedFiles.filter(file => allowedTypes.includes(file.type))
+    const fileData = validFiles.map(file => ({
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size
+    }))
+
+    setFilesToUpload(fileData)
+
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -34,7 +47,7 @@ export default function App() {
     <form onSubmit={handleSubmit}>
       <TopText />
 
-      <input type='file' />
+      <input type='file'  required multiple accept='pdf, jpg, jpeg, png ' onChange={handleFileChange}/>
 
       <button>Upload </button>
     </form>
